@@ -40,11 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchLeaderboard() {
         try {
-            const response = await fetch('/api/leaderboard');
-            const data = await response.json();
             const leaderboardList = document.getElementById("leaderboard");
             leaderboardList.innerHTML = '';
-            data.forEach(entry => {
+    
+            const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').get();
+            snapshot.forEach(doc => {
+                const entry = doc.data();
                 const li = document.createElement("li");
                 li.innerText = `${entry.name}: ${entry.score}`;
                 leaderboardList.appendChild(li);
@@ -56,22 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
     async function addToLeaderboard(name, score) {
         try {
-            const response = await fetch('/api/leaderboard', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, score }),
+            await db.collection('leaderboard').add({
+                name: name,
+                score: score
             });
-            if (response.ok) {
-                fetchLeaderboard();
-            } else {
-                console.error("Error adding to leaderboard");
-            }
+            fetchLeaderboard(); // Update leaderboard after adding new entry
         } catch (error) {
             console.error("Error adding to leaderboard:", error);
         }
     }
+    
     
 
     function createGrid() {

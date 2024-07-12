@@ -29,10 +29,30 @@
         <h2>Leaderboard</h2>
         <ul id="leaderboard"></ul>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js"></script>
     <script src="toy.js"></script>
     
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+        
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDIm4hNLVxAm-MbiKJt1ee9FkMEEKpjyN0",
+          authDomain: "crossmind-2c523.firebaseapp.com",
+          projectId: "crossmind-2c523",
+          storageBucket: "crossmind-2c523.appspot.com",
+          messagingSenderId: "377353655668",
+          appId: "1:377353655668:web:90c6ba205676ba70658821",
+          measurementId: "G-29KEGG7YC6"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
 
 </body>
 </html>
