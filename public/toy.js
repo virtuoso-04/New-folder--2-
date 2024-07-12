@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ['', '', '', '', '', 'I', 'P', 'O', '', '', '', 'V', '', 'T', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', 'T', 'R', 'A', 'D', 'E', 'M', 'A', 'R', 'K', '', '', '', ''],
         ['', '', '', '', '', '', '', 'S', '', '', '', 'S', '', 'L', '', '', '', '', '', ''],
-        ['', '', 'P', 'A', 'T', 'E', 'N', 'T', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', 'P', 'A', 'T', 'E', 'N', 'T', '', '', '', 'T', '', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', 'R', '', '', '', 'M', 'O', 'N', 'O', 'P', 'O', 'L', 'Y', ''],
         ['', '', '', '', '', 'B', '', 'A', '', '', '', 'E', '', '', '', '', '', '', '', ''],
         ['S', 'U', 'B', 'S', 'C', 'R', 'I', 'P', 'T', 'I', 'O', 'N', '', '', '', '', '', '', '', ''],
@@ -44,24 +44,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             const leaderboardList = document.getElementById("leaderboard");
             leaderboardList.innerHTML = '';
-            data.forEach(name => {
+            data.forEach(entry => {
                 const li = document.createElement("li");
-                li.innerText = name;
+                li.innerText = `${entry.name}: ${entry.score}`;
                 leaderboardList.appendChild(li);
             });
         } catch (error) {
             console.error("Error fetching leaderboard:", error);
         }
     }
-
-    async function addToLeaderboard(name) {
+    
+    async function addToLeaderboard(name, score) {
         try {
             const response = await fetch('/api/leaderboard', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name }),
+                body: JSON.stringify({ name, score }),
             });
             if (response.ok) {
                 fetchLeaderboard();
@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error adding to leaderboard:", error);
         }
     }
+    
 
     function createGrid() {
         const crossword = document.getElementById("crossword");
@@ -139,37 +140,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkAnswers() {
         const cells = document.querySelectorAll(".cell");
-        let correct = true;
-
+        let correctCount = 0;
+        let totalCells = 0;
+    
         for (let i = 0; i < 20; i++) {
             for (let j = 0; j < 20; j++) {
                 if (grid[i][j] !== '') {
+                    totalCells++;
                     const input = cells[i * 20 + j].querySelector("input");
-                    if (input.value.toUpperCase() !== grid[i][j]) {
-                        correct = false;
-                        break;
+                    if (input.value.toUpperCase() === grid[i][j]) {
+                        correctCount++;
                     }
                 }
             }
         }
-
-        return correct;
+    
+        return { correctCount, totalCells };
     }
-
+    
     document.getElementById("submit-btn").addEventListener("click", () => {
         const result = document.getElementById("result");
-        if (checkAnswers()) {
+        const { correctCount, totalCells } = checkAnswers();
+        if (correctCount === totalCells) {
             const name = prompt("Congratulations! Enter your name for the leaderboard:");
             if (name) {
-                addToLeaderboard(name);
+                addToLeaderboard(name, correctCount);
             }
             result.innerText = "Correct! Well done!";
             result.style.color = "green";
         } else {
-            result.innerText = "Some answers are incorrect. Please try again.";
+            result.innerText = `Some answers are incorrect. You got ${correctCount} out of ${totalCells} correct. Please try again.`;
             result.style.color = "red";
         }
     });
+    
 
     createGrid();
     addClueNumbers();
