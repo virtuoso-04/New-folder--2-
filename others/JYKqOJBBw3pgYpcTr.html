@@ -1,0 +1,284 @@
+<html><head><base href="https://websim.ai/">
+<title>10x10 Crossword Puzzle</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.puzzle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 30px);
+  grid-gap: 1px;
+  background-color: black;
+  border: 2px solid black;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  position: relative;
+}
+
+.cell-number {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  font-size: 10px;
+  color: #666;
+}
+
+.black-cell {
+  background-color: black;
+}
+
+.clues-container {
+  display: flex;
+  gap: 20px;
+}
+
+.clues {
+  width: 200px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.leaderboard {
+  width: 200px;
+}
+
+input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  text-align: center;
+  font-size: 18px;
+}
+
+input:focus {
+  outline: 2px solid #007bff;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="puzzle-container">
+    <h1>10x10 Crossword Puzzle</h1>
+    <div class="grid" id="crossword-grid"></div>
+    <div class="buttons">
+      <button id="submit-btn">Submit</button>
+      <button id="clear-btn">Clear</button>
+    </div>
+  </div>
+  <div class="clues-container">
+    <div class="clues">
+      <h2>Across</h2>
+      <ol id="across-clues"></ol>
+    </div>
+    <div class="clues">
+      <h2>Down</h2>
+      <ol id="down-clues"></ol>
+    </div>
+  </div>
+  <div class="leaderboard">
+    <h2>Leaderboard</h2>
+    <ol id="leaderboard-list"></ol>
+  </div>
+</div>
+
+<script>
+const puzzle = {
+  grid: [
+    [1,2,3,4,5,'#',6,7,8,9],
+    [10,0,0,0,0,11,0,0,0,0],
+    [12,0,0,0,0,0,0,0,0,0],
+    [13,0,0,0,'#',14,0,0,0,0],
+    [15,0,0,0,16,0,0,'#',17,0],
+    ['#',18,0,0,0,0,0,19,0,0],
+    [20,0,0,'#',21,0,0,0,0,0],
+    [22,0,0,23,0,0,0,0,0,0],
+    [24,0,0,0,0,25,0,0,0,0],
+    [26,0,0,0,0,0,'#',27,0,0]
+  ],
+  acrossClues: [
+    "1. First clue across",
+    "6. Sixth clue across",
+    "10. Tenth clue across",
+    "11. Eleventh clue across",
+    "12. Twelfth clue across",
+    "13. Thirteenth clue across",
+    "14. Fourteenth clue across",
+    "15. Fifteenth clue across",
+    "18. Eighteenth clue across",
+    "20. Twentieth clue across",
+    "21. Twenty-first clue across",
+    "22. Twenty-second clue across",
+    "24. Twenty-fourth clue across",
+    "26. Twenty-sixth clue across",
+    "27. Twenty-seventh clue across"
+  ],
+  downClues: [
+    "1. First clue down",
+    "2. Second clue down",
+    "3. Third clue down",
+    "4. Fourth clue down",
+    "5. Fifth clue down",
+    "6. Sixth clue down",
+    "7. Seventh clue down",
+    "8. Eighth clue down",
+    "9. Ninth clue down",
+    "11. Eleventh clue down",
+    "16. Sixteenth clue down",
+    "17. Seventeenth clue down",
+    "19. Nineteenth clue down",
+    "23. Twenty-third clue down",
+    "25. Twenty-fifth clue down"
+  ]
+};
+
+const grid = document.getElementById('crossword-grid');
+const acrossCluesList = document.getElementById('across-clues');
+const downCluesList = document.getElementById('down-clues');
+const submitBtn = document.getElementById('submit-btn');
+const clearBtn = document.getElementById('clear-btn');
+const leaderboardList = document.getElementById('leaderboard-list');
+
+// Create grid cells
+puzzle.grid.forEach((row, rowIndex) => {
+  row.forEach((cell, colIndex) => {
+    const cellElement = document.createElement('div');
+    cellElement.className = 'cell';
+    if (cell === '#') {
+      cellElement.classList.add('black-cell');
+    } else {
+      const input = document.createElement('input');
+      input.maxLength = 1;
+      input.dataset.row = rowIndex;
+      input.dataset.col = colIndex;
+      cellElement.appendChild(input);
+      if (typeof cell === 'number') {
+        const cellNumber = document.createElement('span');
+        cellNumber.className = 'cell-number';
+        cellNumber.textContent = cell;
+        cellElement.appendChild(cellNumber);
+      }
+    }
+    grid.appendChild(cellElement);
+  });
+});
+
+// Add clues
+puzzle.acrossClues.forEach(clue => {
+  const li = document.createElement('li');
+  li.textContent = clue;
+  acrossCluesList.appendChild(li);
+});
+
+puzzle.downClues.forEach(clue => {
+  const li = document.createElement('li');
+  li.textContent = clue;
+  downCluesList.appendChild(li);
+});
+
+// Leaderboard data (example)
+const leaderboard = [
+  { name: "Alice", score: 95 },
+  { name: "Bob", score: 90 },
+  { name: "Charlie", score: 85 },
+  { name: "David", score: 80 },
+  { name: "Eve", score: 75 }
+];
+
+// Update leaderboard
+function updateLeaderboard() {
+  leaderboardList.innerHTML = '';
+  leaderboard.forEach(entry => {
+    const li = document.createElement('li');
+    li.textContent = `${entry.name}: ${entry.score}`;
+    leaderboardList.appendChild(li);
+  });
+}
+
+updateLeaderboard();
+
+// Submit button functionality
+submitBtn.addEventListener('click', () => {
+  let score = 0;
+  const inputs = document.querySelectorAll('.cell input');
+  inputs.forEach(input => {
+    if (input.value.trim() !== '') {
+      score += 1;
+    }
+  });
+  
+  const playerName = prompt("Enter your name for the leaderboard:");
+  if (playerName) {
+    leaderboard.push({ name: playerName, score: score });
+    leaderboard.sort((a, b) => b.score - a.score);
+    leaderboard.splice(5); // Keep only top 5
+    updateLeaderboard();
+  }
+  
+  alert(`Your score: ${score} out of 100`);
+});
+
+// Clear button functionality
+clearBtn.addEventListener('click', () => {
+  const inputs = document.querySelectorAll('.cell input');
+  inputs.forEach(input => {
+    input.value = '';
+  });
+});
+
+// Auto-focus next input
+grid.addEventListener('input', (e) => {
+  if (e.target.tagName === 'INPUT') {
+    const currentRow = parseInt(e.target.dataset.row);
+    const currentCol = parseInt(e.target.dataset.col);
+    let nextInput = document.querySelector(`input[data-row="${currentRow}"][data-col="${currentCol + 1}"]`);
+    if (!nextInput) {
+      nextInput = document.querySelector(`input[data-row="${currentRow + 1}"][data-col="0"]`);
+    }
+    if (nextInput) {
+      nextInput.focus();
+    }
+  }
+});
+</script>
+</body>
+</html>

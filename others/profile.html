@@ -1,0 +1,265 @@
+<html><head><base href="https://websim.ai" />
+<title>Cybernetic Scholar - A Dark Portfolio for CSE Excellence</title>
+<style>
+  :root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent: #00ff9d;
+    --hover: #00cc7d;
+  }
+  
+  body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--accent);
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  
+  nav ul {
+    display: flex;
+    list-style-type: none;
+  }
+  
+  nav ul li {
+    margin-left: 2rem;
+  }
+  
+  nav ul li a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  nav ul li a:hover {
+    color: var(--accent);
+  }
+  
+  .hero {
+    text-align: center;
+    padding: 4rem 0;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tagline {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+  
+  .cta-button {
+    display: inline-block;
+    background-color: var(--accent);
+    color: var(--bg-primary);
+    padding: 0.8rem 1.5rem;
+    margin-top: 2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background-color: var(--hover);
+  }
+  
+  .section {
+    margin: 4rem 0;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--accent);
+  }
+  
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .project-card {
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .project-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .project-info {
+    padding: 1rem;
+  }
+  
+  .project-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .skill-tag {
+    background-color: var(--bg-secondary);
+    color: var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid var(--accent);
+    color: var(--text-secondary);
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    header {
+      flex-direction: column;
+    }
+    
+    nav ul {
+      margin-top: 1rem;
+    }
+    
+    nav ul li {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">&lt;/&gt; CyberScholar</div>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <main>
+      <section class="hero">
+        <h1>Alex Cyber</h1>
+        <p class="tagline">Computer Science & Engineering Student | Code Craftsman | AI Enthusiast</p>
+        <a href="#contact" class="cta-button">Get in Touch</a>
+      </section>
+      
+      <section id="about" class="section">
+        <h2>About Me</h2>
+        <p>Greetings, netizen! I'm Alex, a passionate Computer Science and Engineering student with a knack for solving complex problems and crafting elegant digital solutions. My journey in the realm of bits and bytes has led me to explore the fascinating intersections of AI, cybersecurity, and web development.</p>
+      </section>
+      
+      <section id="projects" class="section">
+        <h2>Featured Projects</h2>
+        <div class="projects">
+          <div class="project-card">
+            <img src="https://websim.ai/images/neural-network.jpg" alt="Neural Network Visualization" class="project-image" width="300" height="200">
+            <div class="project-info">
+              <h3 class="project-title">NeuroPredictAI</h3>
+              <p class="project-description">An advanced neural network for predictive analysis of stock market trends using sentiment analysis and historical data.</p>
+            </div>
+          </div>
+          <div class="project-card">
+            <img src="https://websim.ai/images/blockchain.jpg" alt="Blockchain Visualization" class="project-image" width="300" height="200">
+            <div class="project-info">
+              <h3 class="project-title">CryptoSecure</h3>
+              <p class="project-description">A blockchain-based secure messaging app ensuring end-to-end encryption and decentralized data storage.</p>
+            </div>
+          </div>
+          <div class="project-card">
+            <img src="https://websim.ai/images/iot-network.jpg" alt="IoT Network" class="project-image" width="300" height="200">
+            <div class="project-info">
+              <h3 class="project-title">SmartCampus IoT</h3>
+              <p class="project-description">An IoT system for optimizing energy usage and enhancing security across university campuses.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section id="skills" class="section">
+        <h2>Technical Arsenal</h2>
+        <div class="skills">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">TensorFlow</span>
+          <span class="skill-tag">PyTorch</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Linux</span>
+        </div>
+      </section>
+      
+      <section id="contact" class="section">
+        <h2>Initiate Contact Sequence</h2>
+        <p>Ready to collaborate on the next big tech innovation? Drop me a line at <a href="/cdn-cgi/l/email-protection#80e1ece5f8c0e3f9e2e5f2f3e3e8efece1f2aee1e9" style="color: var(--accent);"><span class="__cf_email__" data-cfemail="13727f766b53706a71766160707b7c7f72613d727a">[email&#160;protected]</span></a> or connect with me on these digital realms:</p>
+        <div class="skills">
+          <a href="https://github.com/alexcyber" class="skill-tag" style="text-decoration: none;">GitHub</a>
+          <a href="https://linkedin.com/in/alexcyber" class="skill-tag" style="text-decoration: none;">LinkedIn</a>
+          <a href="https://twitter.com/alexcyber" class="skill-tag" style="text-decoration: none;">Twitter</a>
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <p>&copy; 2023 Alex Cyber | Crafted with &lt;code&gt; and ☕</p>
+    </footer>
+  </div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

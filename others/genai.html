@@ -1,0 +1,212 @@
+<html><head><base href="https://photogen-ai.com/%20set%20max-width:%20100%25%20for%20all%20generated%20img%20src%20images.">
+    <title>PhotoGen AI - Generate Ultra-Realistic AI Photos</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        h1 {
+            color: #FFFFFF;
+        }
+        .grid-container {
+            display: grid;
+            gap: 10px;
+        }
+        .grid-item {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border-radius: 16px;
+        }
+        .grid-item.square {
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+        }
+        .grid-item.wide {
+            padding-top: 66.66%; /* 3:2 Aspect Ratio */
+        }
+        .grid-item.portrait {
+            padding-top: 150%; /* 2:3 Aspect Ratio */
+        }
+        .grid-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+            border-radius: 16px;
+            max-width: 100%; /* Set max-width to 100% for all generated img src images */
+        }
+        .generate-container {
+            margin: 20px 0;
+        }
+        .generate-input {
+            padding: 12px;
+            width: 320px;
+            margin-right: 10px;
+            font-size: 18px;
+            border: none;
+            background-color: #333333;
+            color: #FFFFFF;
+            outline: none;
+            border-radius: 16px;
+        }
+        .generate-button {
+            background-color: #007bcc;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 16px;
+        }
+        .ratio-button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .ratio-button {
+            background-color: #333333;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 16px;
+        }
+        .grid-square {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+        }
+        .grid-wide {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+        }
+        .grid-portrait {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+        * {
+            outline: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Ultra-Realistic AI Photos - Midjourney Style</h1>
+        <form method="GET" action="javascript:void(0);" id="generateForm">
+            <div class="generate-container">
+                <input class="generate-input" type="text" name="prompt" id="prompt" placeholder="Enter your prompt here">
+                <button class="generate-button" type="button" onclick="generateImages()">Generate Photos</button>
+            </div>
+        </form>
+        <div class="ratio-button-container">
+            <button class="ratio-button" onclick="setRatio('square')">Square</button>
+            <button class="ratio-button" onclick="setRatio('wide')">Wide</button>
+            <button class="ratio-button" onclick="setRatio('portrait')">Portrait</button>
+        </div>
+        <div class="grid-container grid-square" id="imageGrid">
+            <!-- Placeholder images -->
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+            <div class="grid-item square"></div>
+        </div>
+        <div class="scroll-images" id="scrollImages"></div>
+    </div>
+    <script>
+        let page = 1;
+        let prompt = '';
+        let ratio = 'square';
+
+        function setRatio(newRatio) {
+            ratio = newRatio;
+            const imageGrid = document.getElementById('imageGrid');
+            imageGrid.classList.remove('grid-square', 'grid-wide', 'grid-portrait');
+
+            if (ratio === 'square') {
+                imageGrid.classList.add('grid-square');
+                generatePlaceholders(4, 4);
+            } else if (ratio === 'wide') {
+                imageGrid.classList.add('grid-wide');
+                generatePlaceholders(2, 6);
+            } else if (ratio === 'portrait') {
+                imageGrid.classList.add('grid-portrait');
+                generatePlaceholders(4, 3);
+            }
+        }
+
+        function generateImages() {
+            prompt = document.getElementById('prompt').value;
+            page = 1;
+            if (prompt) {
+                document.getElementById('imageGrid').innerHTML = '';
+                loadMoreImages();
+            }
+        }
+
+        function loadMoreImages() {
+            if (prompt) {
+                const boxCount = ratio === 'square' ? 16 : ratio === 'wide' ? 12 : 12;
+
+                for (let i = 1; i <= boxCount; i++) {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = `grid-item ${ratio}`;
+                    
+                    const img = document.createElement('img');
+                    img.src = `photo${page * boxCount + i}.jpg`;
+                    img.alt = `AI generated photo ${page * boxCount + i} in Midjourney style of ${prompt.toLowerCase()}`;
+                    img.maxWidth = '100%'; /* Set max-width to 100% for all generated img src images */
+                    
+                    imgContainer.appendChild(img);
+                    document.getElementById('imageGrid').appendChild(imgContainer);
+                }
+                page++;
+            }
+        }
+
+        function generatePlaceholders(columns, rows) {
+            document.getElementById('imageGrid').innerHTML = '';
+            for (let i = 0; i < columns * rows; i++) {
+                const placeholder = document.createElement('div');
+                placeholder.className = `grid-item ${ratio}`;
+                document.getElementById('imageGrid').appendChild(placeholder);
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+                loadMoreImages();
+            }
+        });
+
+        // Initialize with default placeholders
+        setRatio('square');
+    </script>
+</body>
+</html>
