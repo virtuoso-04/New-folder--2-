@@ -1,23 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
     const grid = [
-        ['H', 'A', 'P', 'P', 'Y', '', '', '', '', ''],
-        ['A', '', '', '', 'I', '', '', '', '', ''],
-        ['P', '', '', '', 'G', '', '', '', '', ''],
-        ['P', '', '', '', 'H', '', '', '', '', ''],
-        ['Y', 'I', 'G', 'H', 'T', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', '']
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', 'C', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', 'A', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'B', '', '', '', 'I', '', 'P', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'O', '', '', '', 'N', '', 'I', '', '', '', '', '', ''],
+        ['', '', '', '', '', 'I', 'P', 'O', '', '', '', 'V', '', 'T', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'T', 'R', 'A', 'D', 'E', 'M', 'A', 'R', 'K', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'S', '', '', '', 'S', '', 'L', '', '', '', '', '', ''],
+        ['', '', 'P', 'A', 'T', 'E', 'N', 'T', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'R', '', '', '', 'M', 'O', 'N', 'O', 'P', 'O', 'L', 'Y', ''],
+        ['', '', '', '', '', 'B', '', 'A', '', '', '', 'E', '', '', '', '', '', '', '', ''],
+        ['S', 'U', 'B', 'S', 'C', 'R', 'I', 'P', 'T', 'I', 'O', 'N', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'T', '', 'E', '', '', '', '', '', 'T', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'A', '', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'R', '', 'K', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'T', '', 'E', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'U', '', 'V', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'P', '', 'E', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', 'N', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
     ];
 
     const acrossHints = [
-        { number: 1, hint: "Feeling or showing pleasure or contentment" },
+        { number: 4, hint: 'Process where private companies sell their shares to the public to raise equity capital from the public investors.' },
+        { number: 5, hint: 'A symbol, word, or words legally registered or established by use as representing a company or product.' },
+        { number: 6, hint: 'Exclusive right granted for an invention, protecting it from unauthorized use.' },
+        { number: 7, hint: 'A market structure where a single company or entity controls the entire supply of goods or services.' },
+        { number: 9, hint: 'A regular payment made to access a service or product, often on a monthly or yearly basis.' }
     ];
 
     const downHints = [
-        { number: 2, hint: "A day of the week (abbr.)" },
+        { number: 1, hint: 'Financial assets or resources necessary for starting or growing a business.' },
+        { number: 2, hint: 'To start a business with minimal financial resources, often relying on personal savings.' },
+        { number: 3, hint: 'The act of allocating money into a business with the expectation of achieving a profit or gain.' },
+        { number: 8, hint: 'The point at which total revenues equal total expenses, indicating no net loss or gain.' },
+        { number: 10, hint: 'A newly established business, often in its early stages of development.' }
     ];
 
     async function fetchLeaderboard() {
@@ -58,8 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function createGrid() {
         const crossword = document.getElementById("crossword");
 
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < 20; j++) {
                 const cell = document.createElement("div");
                 cell.classList.add("cell");
 
@@ -77,27 +95,29 @@ document.addEventListener("DOMContentLoaded", () => {
     function addClueNumbers() {
         const cells = document.querySelectorAll(".cell");
 
-        // Across clue numbers
-        acrossHints.forEach(clue => {
-            const row = Math.floor(clue.number / 10);
-            const col = clue.number % 10 - 1;
-            const cell = cells[row * 10 + col];
-            const clueNumber = document.createElement("span");
-            clueNumber.classList.add("clue-number");
-            clueNumber.innerText = clue.number;
-            cell.appendChild(clueNumber);
-        });
+        const isFirstCellOfAcrossWord = (row, col) => (
+            (col === 0 || grid[row][col - 1] === '') && (col + 1 < 20 && grid[row][col + 1] !== '')
+        );
 
-        // Down clue numbers
-        downHints.forEach(clue => {
-            const row = Math.floor(clue.number / 10);
-            const col = clue.number % 10 - 1;
-            const cell = cells[row * 10 + col];
-            const clueNumber = document.createElement("span");
-            clueNumber.classList.add("clue-number");
-            clueNumber.innerText = clue.number;
-            cell.appendChild(clueNumber);
-        });
+        const isFirstCellOfDownWord = (row, col) => (
+            (row === 0 || grid[row - 1][col] === '') && (row + 1 < 20 && grid[row + 1][col] !== '')
+        );
+
+        let clueNumber = 1;
+
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < 20; j++) {
+                if (grid[i][j] !== '') {
+                    if (isFirstCellOfAcrossWord(i, j) || isFirstCellOfDownWord(i, j)) {
+                        const cell = cells[i * 20 + j];
+                        const clueNumberElement = document.createElement("span");
+                        clueNumberElement.classList.add("clue-number");
+                        clueNumberElement.innerText = clueNumber++;
+                        cell.appendChild(clueNumberElement);
+                    }
+                }
+            }
+        }
     }
 
     function addHints() {
@@ -121,10 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const cells = document.querySelectorAll(".cell");
         let correct = true;
 
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < 20; j++) {
                 if (grid[i][j] !== '') {
-                    const input = cells[i * 10 + j].querySelector("input");
+                    const input = cells[i * 20 + j].querySelector("input");
                     if (input.value.toUpperCase() !== grid[i][j]) {
                         correct = false;
                         break;
@@ -156,4 +176,3 @@ document.addEventListener("DOMContentLoaded", () => {
     addHints();
     fetchLeaderboard();
 });
-
